@@ -14,10 +14,10 @@ ARGS = argparse.Namespace()
 FULL_WIDTH_CAHRS = ('ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ'
                     'ＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ'
                     '１２３４５６７８９０｀”’“‘＿－～＝＋＼｜／'
-                    '（）［］【】｛｝＜＞．，；：！＾％＃＠＄＆？＊。　'
+                    '（）［］【】｛｝＜＞．，、；：！＾％＃＠＄＆？＊。　'
                    )
 HALF_WIDTH_CHARS = ('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-                    '1234567890`"\'"\'_-~=+\|/()[][]{}<>.,;:!^%#@$&?*. '
+                    '1234567890`"\'"\'_-~=+\|/()[][]{}<>.,,;:!^%#@$&?*. '
                    )
 
 parser = argparse.ArgumentParser(description=
@@ -35,22 +35,23 @@ def is_hidden(path: str) -> bool:
 
 def trans(origin: str) -> str:
     origin = re.sub(r'｀([^｀\n]*)｀', r'`\1`', origin)
-    origin = re.sub(r'”(?!\s|\n)', '" ', origin)
-    origin = re.sub(r'(?<!\s|\n)“', ' "', origin)
-    origin = re.sub(r'’(?!\s|\n)', '\' ', origin)
-    origin = re.sub(r'(?<!\s|\n)‘', ' \'', origin)
-    origin = re.sub(r'(?<!\s|\n)（', ' (', origin)
-    origin = re.sub(r'）(?!\s|\n)', ') ', origin)
-    origin = re.sub(r'(?<!\s|\n)[［【]', ' [', origin)
-    origin = re.sub(r'[］】](?!\s|\n)', '] ', origin)
-    origin = re.sub(r'(?<!\s|\n)｛', ' {', origin)
-    origin = re.sub(r'｝(?!\s|\n)', '} ', origin)
-    origin = re.sub(r'，(?!\s|\n)', ', ', origin)
-    origin = re.sub(r'；(?!\s|\n)', '; ', origin)
-    origin = re.sub(r'：(?!\s|\n)', ': ', origin)
-    origin = re.sub(r'！(?!\s|\n)', '! ', origin)
-    origin = re.sub(r'？(?!\s|\n)', '? ', origin)
-    origin = re.sub(r'[．。](?!\s|\n)', '. ', origin)
+    origin = re.sub(r'”(?=\w)', '" ', origin)
+    origin = re.sub(r'(?<=\w)“', ' "', origin)
+    origin = re.sub(r'’(?=\w)', '\' ', origin)
+    origin = re.sub(r'(?<=\w)‘', ' \'', origin)
+    origin = re.sub(r'(?<=\w)（', ' (', origin)
+    origin = re.sub(r'）(?=\w)', ') ', origin)
+    origin = re.sub(r'(?<=\w)[［【]', ' [', origin)
+    origin = re.sub(r'[］】](?=\w)', '] ', origin)
+    origin = re.sub(r'(?<=\w)｛', ' {', origin)
+    origin = re.sub(r'｝(?=\w)', '} ', origin)
+    origin = re.sub(r'，(?=\w)', ', ', origin)
+    origin = re.sub(r'、(?=\w)', ', ', origin)
+    origin = re.sub(r'；(?=\w)', '; ', origin)
+    origin = re.sub(r'：(?=\w)', ': ', origin)
+    origin = re.sub(r'！(?=\w)', '! ', origin)
+    origin = re.sub(r'？(?=\w)', '? ', origin)
+    origin = re.sub(r'[．。](?=\w)', '. ', origin)
     return origin.translate(
         str.maketrans(FULL_WIDTH_CAHRS, HALF_WIDTH_CHARS))
 
